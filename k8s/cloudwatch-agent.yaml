@@ -1,0 +1,18 @@
+# k8s/cloudwatch-agent.yaml
+# Deploys CloudWatch Container Insights agent via namespace + IRSA binding
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: amazon-cloudwatch
+  labels:
+    name: amazon-cloudwatch
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cloudwatch-agent
+  namespace: amazon-cloudwatch
+  annotations:
+    # Terraform output: module.eks.cloudwatch_irsa_role_arn
+    eks.amazonaws.com/role-arn: "${CLOUDWATCH_IRSA_ROLE_ARN}"
